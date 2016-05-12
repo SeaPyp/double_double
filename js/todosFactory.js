@@ -17,11 +17,11 @@ function TodoFactory($http){
 
   todoFactory.new = function(data){
     return $http.post(todoUrl, data);
-  }
+  };
 
   todoFactory.destroy = function(id){
-    return
-  }
+    return $http.delete(todoUrl + id);
+  };
 
   return todoFactory;
 }
