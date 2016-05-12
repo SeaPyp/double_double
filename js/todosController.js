@@ -6,8 +6,9 @@ TodoController.$inject = ['TodoFactory'];
 function TodoController(TodoFactory){
   var self = this;
   self.api = TodoFactory;
-  self.add = add;
   self.list = [];
+  self.add = add;
+  self.remove = remove;
 
   self.api.getAllTasks()
     .success(function(data){
@@ -17,9 +18,25 @@ function TodoController(TodoFactory){
 
   function add(){
     self.new.isComplete = false;
-    console.log(self.new);
-    self.api.new(self.new);
-    self.list.push(self.new);
-    self.new = {};
+    self.api.new(self.new)
+      .success(function(data){
+        self.api.getAllTasks()
+          .success(function(data){
+            self.list = (data);
+            self.new = {};
+          });
+      });
+    // self.list.push(self.new);
+  }
+
+  function remove(item){
+    var id = item._id;
+    self.api.destroy(id)
+      .success(function(data){
+        self.api.getAllTasks()
+          .success(function(tasks){
+            self.list = tasks;
+          });
+      });
   }
 }

@@ -8,11 +8,6 @@
   <script src="/js/todosFactory.js"></script>
   <script src="/js/todosController.js"></script>
   <style>
-    .done{
-      text-decoration: line-through;
-      color: black;
-    }
-
     .high{
       color: red;
     }
@@ -20,15 +15,30 @@
     .medium{
       color: orange;
     }
+
+    .done{
+      text-decoration: line-through;
+      color: black;
+    }
+
+    .completed{
+      color: black;
+    }
   </style>
 </head>
 <body ng-controller="TodoController as todos">
   <div class="col-xs-6 col-xs-offset-1">
     <table class="table table-hover">
+      <tr>
+        <th>Task</th>
+        <th>Completed?</th>
+        <th>Difficulty (1 = high)</th>
+      </tr>
       <tr ng-repeat="item in todos.list" ng-class="{high: item.priority == 1, medium: item.priority == 2}">
         <td ng-class="{done: item.isComplete}">{{item.title}}</td>
-        <td>{{item.isComplete}}<span ng-if="item.isComplete">: {{item.completedOn}}</span></td>
-        <td></td>
+        <td ng-class="{completed: item.isComplete}">{{item.isComplete}}<span ng-if="item.isComplete">: {{item.completedOn}}</span></td>
+        <td ng-class="{completed: item.isComplete}">{{item.difficulty}}</td>
+        <td><button ng-click="todos.remove(item)">Delete</button></td>
       </tr>
     </table>
   </div>
@@ -48,7 +58,7 @@
         <option value="2">2 (Med)</option>
         <option value="3">3 (Low)</option>
       </select>
-      <button class="btn active">Submit</button>
+      <button class="btn btn-default active">Submit</button>
     </form>
   </div>
 
